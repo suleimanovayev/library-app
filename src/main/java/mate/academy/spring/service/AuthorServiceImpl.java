@@ -1,28 +1,28 @@
 package mate.academy.spring.service;
 
 import java.util.List;
-import mate.academy.spring.dao.UserDao;
-import mate.academy.spring.entity.User;
+
+import mate.academy.spring.dao.AuthorDao;
+import mate.academy.spring.entity.Author;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserServiceImp implements UserService {
+public class AuthorServiceImpl implements AuthorService {
 
     @Autowired
-    private UserDao userDao;
+    private AuthorDao authorDao;
 
     @Transactional
     @Override
-    public void add(User user) {
-        userDao.add(user);
+    public void add(Author author) {
+        authorDao.add(author);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<User> listUsers() {
-        return userDao.listUsers();
+    public List<Author> authors() {
+        return authorDao.authors();
     }
-
 }

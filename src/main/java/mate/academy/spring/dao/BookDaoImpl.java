@@ -1,12 +1,11 @@
 package mate.academy.spring.dao;
 
+import java.util.List;
+import javax.persistence.TypedQuery;
 import mate.academy.spring.entity.Book;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.TypedQuery;
-import java.util.List;
 
 @Repository
 public class BookDaoImpl implements BookDao {
@@ -21,8 +20,18 @@ public class BookDaoImpl implements BookDao {
 
     @Override
     public List<Book> listBooks() {
-        @SuppressWarnings("unchecked")
-        TypedQuery<Book> query = sessionFactory.getCurrentSession().createQuery("from Book");
+        TypedQuery<Book> query = sessionFactory
+                .getCurrentSession()
+                .createQuery("from Book", Book.class);
         return query.getResultList();
+    }
+
+    @Override
+    public Book findBookByTitle(String title) {
+        TypedQuery typedQuery = sessionFactory.getCurrentSession()
+                .createQuery("from Book where "
+                        + "title like concat('%', :title, '%')", Book.class);
+        typedQuery.setParameter("title", title);
+        return (Book) typedQuery.getSingleResult();
     }
 }

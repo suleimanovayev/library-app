@@ -1,8 +1,7 @@
 package mate.academy.spring.service;
 
-import mate.academy.spring.entity.User;
-
 import java.util.List;
+import mate.academy.spring.entity.User;
 
 public interface UserService {
     void add(User user);
