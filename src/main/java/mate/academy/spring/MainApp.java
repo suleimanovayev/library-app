@@ -21,14 +21,15 @@ public class MainApp {
                 new AnnotationConfigApplicationContext(AppConfig.class);
 
         UserService userService = context.getBean(UserService.class);
-        User user1 = new User("Sunil", "Bora", "suni.bora@example.com");
-        userService.add(user1);
-        User user2 = new User("David", "Miller", "david.miller@example.com");
-        userService.add(user2);
-        User user3 = new User("Sameer", "Singh", "sameer.singh@example.com");
-        userService.add(user3);
-        User user4 = new User("Paul", "Smith", "paul.smith@example.com");
-        userService.add(user4);
+
+        User userSunil = new User("Sunil", "Bora", "suni.bora@example.com");
+        userService.add(userSunil);
+        User userDavid = new User("David", "Miller", "david.miller@example.com");
+        userService.add(userDavid);
+        User userSameer = new User("Sameer", "Singh", "sameer.singh@example.com");
+        userService.add(userSameer);
+        User userPaul = new User("Paul", "Smith", "paul.smith@example.com");
+        userService.add(userPaul);
 
         List<User> users = userService.listUsers();
         for (User user : users) {
@@ -42,25 +43,25 @@ public class MainApp {
         BookService bookService = context.getBean(BookService.class);
         AuthorService authorService = context.getBean(AuthorService.class);
 
-        Book book1 = new Book("Гран Торино", 1987, 700D);
-        Author author1 = new Author("Nik", "Shenk");
-        bookService.add(book1);
-        authorService.add(author1);
-        book1.setAuthors(Collections.singletonList(author1));
+        Book bookGranTorino = new Book("Гран Торино", 1987, 700D);
+        Author authorNikShenk = new Author("Nik", "Shenk");
+        bookService.add(bookGranTorino);
+        authorService.add(authorNikShenk);
+        bookGranTorino.setAuthors(Collections.singletonList(authorNikShenk));
 
-        Book book2 = new Book("Форрест Гамп", 1986, 450D);
-        Author author2 = new Author("Winston", "Groom");
-        bookService.add(book2);
-        authorService.add(author2);
-        author2.addBook(book2);
-        book2.setAuthors(Collections.singletonList(author2));
+        Book bookForrestGamp = new Book("Форрест Гамп", 1986, 450D);
+        Author authorWinstonGroom = new Author("Winston", "Groom");
+        bookService.add(bookForrestGamp);
+        authorService.add(authorWinstonGroom);
+        authorWinstonGroom.addBook(bookForrestGamp);
+        bookForrestGamp.setAuthors(Collections.singletonList(authorWinstonGroom));
 
-        Book book3 = new Book("Зеленая миля", 1999, 690D);
-        Author author3 = new Author("Stephen", "King");
-        bookService.add(book3);
-        authorService.add(author3);
-        book3.setAuthors(Collections.singletonList(author3));
-        author3.addBook(book3);
+        Book bookGreenMile = new Book("Зеленая миля", 1999, 690D);
+        Author authorStephenKing = new Author("Stephen", "King");
+        bookService.add(bookGreenMile);
+        authorService.add(authorStephenKing);
+        bookGreenMile.setAuthors(Collections.singletonList(authorStephenKing));
+        authorStephenKing.addBook(bookGreenMile);
 
         List<Book> bookList = bookService.listBooks();
 
@@ -84,13 +85,12 @@ public class MainApp {
 
         RentService rentService = context.getBean(RentService.class);
 
-        Rent rent1 = new Rent(user1, book1);
-        Rent rent2 = new Rent(user2, book2);
-        Rent rent3 = new Rent(user3, book3);
+        rentService.add(new Rent(userSunil, bookGranTorino));
+        rentService.add(new Rent(userSunil, bookForrestGamp));
+        rentService.add(new Rent(userPaul, bookForrestGamp));
+        rentService.add(new Rent(userDavid, bookGreenMile));
 
-        rentService.add(rent1);
-        rentService.add(rent2);
-        rentService.add(rent3);
+        rentService.getBooksRentByUser(userSunil);
 
         context.close();
     }

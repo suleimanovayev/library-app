@@ -25,13 +25,15 @@ public class BookServiceImpl implements BookService {
         return bookDao.listBooks();
     }
 
+    @Transactional
     @Override
-    public Book findBookByTitle(String name) {
+    public List<Book> findBookByTitle(String name) {
         return bookDao.findBookByTitle(name);
     }
 
+    @Transactional
     @Override
-    public Book findBookByAuthor(String name) {
-        return bookDao.findBookByTitle(name);
+    public List<Book> findBookByAuthor(String name) {
+        return bookDao.findBooksByAuthor(name);
     }
 }

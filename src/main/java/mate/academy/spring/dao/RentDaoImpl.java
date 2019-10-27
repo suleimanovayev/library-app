@@ -1,6 +1,7 @@
 package mate.academy.spring.dao;
 
 import java.util.List;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import mate.academy.spring.entity.Book;
 import mate.academy.spring.entity.Rent;
@@ -22,14 +23,14 @@ public class RentDaoImpl implements RentDao {
 
     @Override
     public List<Rent> rents() {
-        TypedQuery typedQuery = sessionFactory.getCurrentSession()
-                .createQuery("from Rent, Rent.class");
+        TypedQuery<Rent> typedQuery = sessionFactory.getCurrentSession()
+                .createQuery("from Rent", Rent.class);
         return typedQuery.getResultList();
     }
 
     @Override
     public void returnBook(User user, Book book) {
-        TypedQuery typedQuery = sessionFactory
+        TypedQuery<Query> typedQuery = sessionFactory
                 .getCurrentSession()
                 .createQuery("update Rent set active = false where"
                 + " user_id=:user_id and book_id=:book_id");
@@ -39,9 +40,11 @@ public class RentDaoImpl implements RentDao {
     }
 
     @Override
-    public Book getBookRentByUser(User user) {
-        TypedQuery typedQuery = sessionFactory.getCurrentSession()
-                .createQuery("from Rent where user=:user");
-        return (Book) typedQuery.getSingleResult();
+    public List<Book> getBooksRentByUser(User user) {
+        TypedQuery<Book> typedQuery = sessionFactory.getCurrentSession()
+                .createQuery("select rent.book from Rent "
+                        + "rent where user_id=:userId and active = true", Book.class);
+        typedQuery.setParameter("userId", user.getId());
+        return typedQuery.getResultList();
     }
 }

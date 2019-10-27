@@ -21,7 +21,7 @@ public class AuthorDaoImpl implements AuthorDao {
     @Override
     public List<Author> authors() {
         TypedQuery<Author> authorTypedQuery = sessionFactory.getCurrentSession()
-                .createQuery("from Author, Author.class");
+                .createQuery("from Author", Author.class);
         return authorTypedQuery.getResultList();
     }
 }

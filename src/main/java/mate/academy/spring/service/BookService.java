@@ -9,7 +9,7 @@ public interface BookService {
 
     List<Book> listBooks();
 
-    Book findBookByTitle(String name);
+    List<Book> findBookByTitle(String name);
 
-    Book findBookByAuthor(String name);
+    List<Book> findBookByAuthor(String name);
 }
