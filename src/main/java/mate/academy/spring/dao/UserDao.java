@@ -1,10 +1,10 @@
 package mate.academy.spring.dao;
 
+import java.util.List;
 import mate.academy.spring.entity.User;
 
-import java.util.List;
-
 public interface UserDao {
+
     void add(User user);
 
     List<User> listUsers();
