@@ -1,8 +1,9 @@
-package mate.academy.spring.dao;
+package mate.academy.spring.dao.impl;
 
 import java.util.List;
+import java.util.Optional;
 import javax.persistence.TypedQuery;
-
+import mate.academy.spring.dao.BookDao;
 import mate.academy.spring.entity.Book;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.NativeQuery;
@@ -44,8 +45,21 @@ public class BookDaoImpl implements BookDao {
                 .createSQLQuery("SELECT * FROM books inner join "
                         + "books_authors on books.id = book_authors.book_id "
                         + "inner join authors on books_authors.authors_id = authors"
-                        + ".id where authors.name like concat('%', "  + author + ", '%');");
+                        + ".id where authors.name like concat('%', " + author + ", '%');");
         sqlQuery.setParameter("author", author);
         return sqlQuery.getResultList();
+    }
+
+    @Override
+    public Optional<Book> find(Long id) {
+        return Optional.ofNullable(sessionFactory.getCurrentSession().get(Book.class, id));
+    }
+
+    @Override
+    public void deleteBook(Long bookId) {
+        TypedQuery<Book> typedQuery = sessionFactory.getCurrentSession()
+                .createQuery("DELETE FROM Book WHERE id=:book_id");
+        typedQuery.setParameter("book_id", bookId);
+        typedQuery.executeUpdate();
     }
 }

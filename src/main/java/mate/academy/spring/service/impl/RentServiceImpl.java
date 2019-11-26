@@ -1,4 +1,4 @@
-package mate.academy.spring.service;
+package mate.academy.spring.service.impl;
 
 import java.util.List;
 import mate.academy.spring.dao.BookDao;
@@ -7,6 +7,7 @@ import mate.academy.spring.dao.UserDao;
 import mate.academy.spring.entity.Book;
 import mate.academy.spring.entity.Rent;
 import mate.academy.spring.entity.User;
+import mate.academy.spring.service.RentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,5 +46,15 @@ public class RentServiceImpl implements RentService {
     @Override
     public List<Book> getBooksRentByUser(User user) {
         return rentDao.getBooksRentByUser(user);
+    }
+
+    @Transactional
+    @Override
+    public Rent rentBook(User user, Book book) {
+        Rent rent = new Rent();
+        rent.setBook(book);
+        rent.setUser(user);
+        rentDao.add(rent);
+        return rent;
     }
 }
