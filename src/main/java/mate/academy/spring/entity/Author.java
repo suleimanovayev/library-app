@@ -9,23 +9,28 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "authors")
 public class Author {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name")
     private String name;
 
     @Column(name = "surName")
-    private String surName;
+    private String surname;
 
-    @ManyToMany(mappedBy = "authors", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "books_authors",
+            joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "book_id"))
     private List<Book> books;
 
     public Author() {
@@ -33,16 +38,16 @@ public class Author {
 
     public Author(String name, String surName) {
         this.name = name;
-        this.surName = surName;
+        this.surname = surName;
         books = new ArrayList<>();
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {
@@ -53,12 +58,12 @@ public class Author {
         this.name = name;
     }
 
-    public String getSurName() {
-        return surName;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setSurName(String surName) {
-        this.surName = surName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public List<Book> getBooks() {
@@ -71,6 +76,11 @@ public class Author {
 
     public void addBook(Book book) {
         books.add(book);
+    }
+
+    @Override
+    public String toString() {
+        return "Author " + name + ' ' + surname;
     }
 
 }

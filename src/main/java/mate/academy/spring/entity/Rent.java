@@ -41,12 +41,12 @@ public class Rent {
         active = false;
     }
 
-    public Long getId() {
-        return id;
-    }
-
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public LocalDate getRentDate() {
@@ -79,15 +79,5 @@ public class Rent {
 
     public void setBook(Book book) {
         this.book = book;
-    }
-
-    @Override
-    public String toString() {
-        return "Rent{"
-                + "id=" + id
-                + ", rentDate=" + rentDate
-                + ", user=" + user
-                + ", book=" + book
-                + ", active=" + active + '}';
     }
 }

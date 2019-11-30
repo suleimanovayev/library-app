@@ -1,8 +1,10 @@
-package mate.academy.spring.dao;
+package mate.academy.spring.dao.impl;
 
 import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+
+import mate.academy.spring.dao.RentDao;
 import mate.academy.spring.entity.Book;
 import mate.academy.spring.entity.Rent;
 import mate.academy.spring.entity.User;

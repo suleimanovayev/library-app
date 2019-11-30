@@ -2,10 +2,7 @@ package mate.academy.spring.config;
 
 import java.util.Properties;
 import javax.sql.DataSource;
-import mate.academy.spring.entity.Author;
-import mate.academy.spring.entity.Book;
-import mate.academy.spring.entity.Rent;
-import mate.academy.spring.entity.User;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +13,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
@@ -23,12 +21,19 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 @ComponentScans(value = {
         @ComponentScan("mate.academy.spring.dao"),
-        @ComponentScan("mate.academy.spring.service")
+        @ComponentScan("mate.academy.spring.service"),
+        @ComponentScan("mate.academy.spring.security"),
+        @ComponentScan("mate.academy.spring.dto")
 })
 public class AppConfig {
 
     @Autowired
     private Environment env;
+
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Bean
     public DataSource getDataSource() {
@@ -50,7 +55,7 @@ public class AppConfig {
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(Author.class, User.class, Book.class, Rent.class);
+        factoryBean.setPackagesToScan("mate.academy.spring.entity");
         return factoryBean;
     }
 
