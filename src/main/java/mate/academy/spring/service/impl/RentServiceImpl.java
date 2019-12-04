@@ -1,5 +1,6 @@
 package mate.academy.spring.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import mate.academy.spring.dao.BookDao;
 import mate.academy.spring.dao.RentDao;
@@ -39,7 +40,7 @@ public class RentServiceImpl implements RentService {
     @Transactional
     @Override
     public void returnBook(User user, Book book) {
-        bookDao.add(book);
+        rentDao.returnBook(user, book);
     }
 
     @Transactional(readOnly = true)
@@ -50,11 +51,11 @@ public class RentServiceImpl implements RentService {
 
     @Transactional
     @Override
-    public Rent rentBook(User user, Book book) {
-        Rent rent = new Rent();
+    public void rentBook(User user, Book book) {
+        Rent rent  = new Rent();
         rent.setBook(book);
         rent.setUser(user);
+        rent.setActive(true);
         rentDao.add(rent);
-        return rent;
     }
 }

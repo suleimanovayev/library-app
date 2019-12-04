@@ -28,12 +28,13 @@ public class UserServiceImp implements UserService {
         return userDao.listUsers();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public Optional<User> getByUserName(String userName) {
         return userDao.getByUserName(userName);
     }
 
+    @Transactional
     @Override
     public Optional<User> getByMail(String email) {
         return userDao.getByMail(email);

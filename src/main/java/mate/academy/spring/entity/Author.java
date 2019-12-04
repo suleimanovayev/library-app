@@ -2,52 +2,48 @@ package mate.academy.spring.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "authors")
 public class Author {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "author_id")
     private Long id;
-
     private String name;
-
-    @Column(name = "surName")
     private String surname;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "books_authors",
-            joinColumns = @JoinColumn(name = "author_id"),
-            inverseJoinColumns = @JoinColumn(name = "book_id"))
-    private List<Book> books;
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.EAGER)
+    private List<Book> books = new ArrayList<>();
 
     public Author() {
     }
 
-    public Author(String name, String surName) {
+    public Author(String name, String surname) {
         this.name = name;
-        this.surname = surName;
-        books = new ArrayList<>();
+        this.surname = surname;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Author(String name, String surname, List<Book> books) {
+        this.name = name;
+        this.surname = surname;
+        this.books = books;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -74,13 +70,9 @@ public class Author {
         this.books = books;
     }
 
-    public void addBook(Book book) {
-        books.add(book);
-    }
-
     @Override
     public String toString() {
-        return "Author " + name + ' ' + surname;
+        return "Author " + name + ' ' + surname + ' '
+                + " (with id " + id + " )";
     }
-
 }

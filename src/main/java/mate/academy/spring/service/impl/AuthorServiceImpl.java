@@ -31,18 +31,18 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional
     @Override
     public Optional<Author> getById(Long id) {
-        return Optional.empty();
+        return authorDao.getById(id);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Author> findByName(String name) {
-        return null;
+        return authorDao.findByName(name);
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<Author> findByNameAndSurname(String name, String surname) {
-        return null;
+        return authorDao.findByNameAndSurname(name, surname);
     }
 }

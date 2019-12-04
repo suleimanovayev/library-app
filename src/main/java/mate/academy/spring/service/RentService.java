@@ -16,5 +16,5 @@ public interface RentService {
 
     List<Book> getBooksRentByUser(User user);
 
-    Rent rentBook(User user, Book book);
+    void rentBook(User user, Book book);
 }
