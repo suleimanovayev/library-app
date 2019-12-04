@@ -65,7 +65,7 @@ public class InjectController {
         roleService.add(USER);
         roleService.add(ADMIN);
 
-        User user = new User("Maria","Maria","suleimanovayev@gmail.com");
+        User user = new User("User","User","suleimanovayev@gmail.com");
         user.setPassword(passwordEncoder.encode("q"));
         user.setUsername("q");
         Role roleUser  = roleService.getRoleByName("ROLE_USER").get();
@@ -74,7 +74,7 @@ public class InjectController {
         user.setRoles(userRoles);
         userService.add(user);
 
-        User admin = new User("Anna", "Anna", "arat@gmail.com");
+        User admin = new User("Admin", "Admin", "arat@gmail.com");
         admin.setPassword(passwordEncoder.encode("a"));
         admin.setUsername("a");
         Role roleAdmin  = roleService.getRoleByName("ROLE_ADMIN").get();
