@@ -44,9 +44,10 @@ public class RentDaoImpl implements RentDao {
     @Override
     public List<Book> getBooksRentByUser(User user) {
         TypedQuery<Book> typedQuery = sessionFactory.getCurrentSession()
-                .createQuery("select rent.book from Rent "
-                        + "rent where user_id=:userId and active = true", Book.class);
+                .createQuery("select book from Rent "
+                        + " where user_id=:userId and active=:active", Book.class);
         typedQuery.setParameter("userId", user.getId());
+        typedQuery.setParameter("active", true);
         return typedQuery.getResultList();
     }
 }

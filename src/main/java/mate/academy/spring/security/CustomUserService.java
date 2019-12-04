@@ -2,8 +2,8 @@ package mate.academy.spring.security;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
+
 import mate.academy.spring.entity.Role;
 import mate.academy.spring.entity.User;
 import mate.academy.spring.service.UserService;
@@ -17,12 +17,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CustomUserService implements UserDetailsService {
+
     @Autowired
     private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<User> u = userService.getByUserName(username);
         User user = userService.getByUserName(username)
                 .orElseThrow(() -> new UsernameNotFoundException(
                         "User with username '" + username + "' not found"));

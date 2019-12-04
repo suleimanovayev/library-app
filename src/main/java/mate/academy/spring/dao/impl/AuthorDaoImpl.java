@@ -30,16 +30,27 @@ public class AuthorDaoImpl implements AuthorDao {
 
     @Override
     public Optional<Author> getById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(sessionFactory.getCurrentSession().get(Author.class, id));
     }
 
     @Override
     public List<Author> findByName(String name) {
-        return null;
+        TypedQuery<Author> typedQuery = sessionFactory
+                .getCurrentSession()
+                .createQuery("from Author where name like concat('%', :name, '%')", Author.class);
+        typedQuery.setParameter("name", name);
+        return typedQuery.getResultList();
     }
 
     @Override
     public List<Author> findByNameAndSurname(String name, String surname) {
-        return null;
+        TypedQuery<Author> typedQuery = sessionFactory
+                .getCurrentSession()
+                .createQuery("from Author where "
+                        + "name like concat('%', :name, '%') "
+                        + "and surname like concat('%', :surname, '%')", Author.class);
+        typedQuery.setParameter("name", name);
+        typedQuery.setParameter("surname", surname);
+        return typedQuery.getResultList();
     }
 }

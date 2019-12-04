@@ -1,18 +1,16 @@
 package mate.academy.spring.controller;
 
 import java.security.Principal;
-
-import java.util.List;
 import java.util.Optional;
+
 import mate.academy.spring.entity.Book;
-import mate.academy.spring.entity.Rent;
 import mate.academy.spring.entity.User;
 import mate.academy.spring.service.BookService;
 import mate.academy.spring.service.RentService;
 import mate.academy.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/rent")
 public class RentController {
-
     @Autowired
     private RentService rentService;
 
@@ -30,48 +27,43 @@ public class RentController {
     @Autowired
     private BookService bookService;
 
-    @GetMapping("/rentbook")
-    public String rentBook(@RequestParam("book_id") Long bookId, Model model, Principal principal) {
-        Optional<User> optionalUser = userService.getByMail(principal.getName());
+    @GetMapping("/rentBook")
+    public String getAllBooksRentByUser(ModelMap model, Principal principal) {
+        Optional<User> optionalUser = getCurrentUser(principal);
         if (optionalUser.isEmpty()) {
-            return "wrong";
+            model.addAttribute("message", "User not found");
+            return "errorPage";
         }
-        User user = optionalUser.get();
-        Optional<Book> optionalBook = bookService.find(bookId);
-        if (optionalBook.isEmpty()) {
-            return "wrong";
-        }
-        Book book = optionalBook.get();
-        Rent rent = rentService.rentBook(user, book);
-        model.addAttribute("rent", rent);
-        return "forward:/book";
+        model.put("books", rentService.getBooksRentByUser(optionalUser.get()));
+        return "rentByUser";
     }
 
-    @GetMapping("/returnbook")
-    public String returnBook(@RequestParam("book_id") Long bookId, Principal principal) {
-        Optional<User> optionalUser = userService.getByMail(principal.getName());
-        if (optionalUser.isEmpty()) {
-            return "error";
+    @GetMapping("/getBook")
+    public String rentBook(@RequestParam("book_id") Long id, ModelMap model, Principal principal) {
+        Optional<User> optionalUser = getCurrentUser(principal);
+        Optional<Book> optionalBook = bookService.find(id);
+        if (optionalUser.isEmpty() || optionalBook.isEmpty()) {
+            model.addAttribute("message", "Failed to rent a book with id = " + id);
+            return "errorPage";
         }
-        User user = optionalUser.get();
-        Optional<Book> optionalBook = bookService.find(bookId);
-        if (optionalBook.isEmpty()) {
-            return "error";
-        }
-        Book book = optionalBook.get();
-        rentService.returnBook(user, book);
-        return "forward:/book";
+        rentService.rentBook(optionalUser.get(), optionalBook.get());
+        return getAllBooksRentByUser(model,principal);
     }
 
-    @GetMapping("/rent")
-    public String rentBooks(Model model, Principal principal) {
-        Optional<User> optionalUser = userService.getByMail(principal.getName());
-        if (optionalUser.isEmpty()) {
-            return "error";
+    @GetMapping("/returnBook")
+    public String returnBook(@RequestParam("book_id") Long id,
+                             ModelMap model, Principal principal) {
+        Optional<User> optionalUser = getCurrentUser(principal);
+        Optional<Book> optionalBook = bookService.find(id);
+        if (optionalUser.isEmpty() || optionalBook.isEmpty()) {
+            model.addAttribute("message", "Failed to return a book with id = " + id);
+            return "errorPage";
         }
-        User user = optionalUser.get();
-        List<Book> booksRentByUser = rentService.getBooksRentByUser(user);
-        model.addAttribute("rentBooks", booksRentByUser);
-        return "rentInfo";
+        rentService.returnBook(optionalUser.get(), optionalBook.get());
+        return getAllBooksRentByUser(model,principal);
+    }
+
+    private Optional<User> getCurrentUser(Principal principal) {
+        return userService.getByUserName(principal.getName());
     }
 }

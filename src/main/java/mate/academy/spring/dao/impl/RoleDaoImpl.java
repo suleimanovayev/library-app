@@ -27,6 +27,7 @@ public class RoleDaoImpl implements RoleDao {
                 .createQuery("FROM Role WHERE roleName=:roleName",
                         Role.class);
         query.setParameter("roleName", name);
+        Optional<Role> role = Optional.ofNullable(query.getSingleResult());
         return Optional.ofNullable(query.getSingleResult());
 
     }

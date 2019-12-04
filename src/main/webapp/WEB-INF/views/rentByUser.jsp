@@ -1,10 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
 <html>
 <head>
-    <title>All Items</title>
+    <title>Rented books</title>
 </head>
 <body>
 <jsp:include page="header.jsp"/>
@@ -17,7 +15,7 @@
         <th>Price</th>
         <th>Info</th>
         <th>Authors</th>
-        <th>Rent Book</th>
+        <th>Return Book</th>
     </tr>
     <c:forEach var="book" items="${books}">
         <tr>
@@ -28,19 +26,13 @@
             <td>
                 <a href="${pageContext.request.contextPath}/book/${book.id}">INFO</a>
             </td>
-            <td><${book.authors}></td>
+            <td><${book.authors}"></td>
             <td>
-                <a href="${pageContext.request.contextPath}/rent/getBook?book_id=${book.id}">Rent Book</a>
+                <a href="${pageContext.request.contextPath}/rent/returnBook?book_id=${book.id}">Return Book</a>
             </td>
         </tr>
     </c:forEach>
 </table>
-<hr>
-<form action="${pageContext.request.contextPath}/book/find" method="get">
-    <td>Find by title:</td>
-    <td><input value="${title}" name="title"/></td>
-    <button type="submit"> Find</button>
-</form>
+
 </body>
 </html>
-
