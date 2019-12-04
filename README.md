@@ -34,4 +34,3 @@ Change db.properties file, set your login, password and database name
 
 # <a name="authors"></a>Authors
 https://github.com/suleimanovayev
-
